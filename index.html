@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KanaBanana — Learn hiragana &amp; katakana</title>
+<meta name="description" content="KanaBanana is a focused iOS trainer for hiragana and katakana: trace with stroke order, quiz yourself, and watch your progress turn green. Works offline, no account, no ads.">
+<meta name="theme-color" content="#F5B82E" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)">
+
+<!-- Social preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="KanaBanana — Learn hiragana & katakana">
+<meta property="og:description" content="A focused iOS trainer for hiragana and katakana. Trace, quiz, and review until every kana turns green.">
+<meta property="og:url" content="https://alatip.github.io/kanabanana-public/">
+
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --surface: #FFFFFF;
+    --surface-2: #FFF8E6;
+    --text: #1c1c1e;
+    --muted: #6b6b72;
+    --accent: #F5B82E;
+    --accent-strong: #C98A00;
+    --border: rgba(0,0,0,0.08);
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05);
+    --green: #34c759;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f10;
+      --surface: #1c1c1e;
+      --surface-2: #26230f;
+      --text: #f2f2f7;
+      --muted: #9a9aa2;
+      --accent: #FFD23F;
+      --accent-strong: #FFD23F;
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
+      --green: #30d158;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent-strong); }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px max(20px, env(safe-area-inset-left));
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+  .brand .mark { font-size: 22px; }
+  .brand .accent { color: var(--accent-strong); }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 500; margin-left: 20px; }
+  nav a:hover { color: var(--text); }
+  @media (max-width: 560px) { nav a { margin-left: 14px; font-size: 14px; } .brand .label-long { display: none; } }
+
+  /* Layout */
+  main { max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  section:first-of-type { border-top: none; }
+  h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 16px; }
+  h2 { font-size: 26px; letter-spacing: -.01em; margin: 0 0 8px; }
+  h3 { font-size: 17px; margin: 24px 0 4px; }
+  p { color: var(--text); }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; }
+
+  /* Hero */
+  .hero { text-align: center; padding-top: 64px; padding-bottom: 40px; }
+  .hero .blurb { font-size: 19px; color: var(--muted); max-width: 540px; margin: 0 auto 26px; }
+  .kana-strip {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    margin: 34px auto 0; max-width: 560px;
+    font-size: 30px; color: var(--accent-strong); opacity: .9;
+  }
+  .kana-strip span {
+    width: 52px; height: 52px; display: grid; place-items: center;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px;
+  }
+  .badge {
+    display: inline-block; margin-top: 6px; padding: 8px 16px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--accent-strong); font-weight: 600; font-size: 14px;
+  }
+
+  /* Feature cards */
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px; box-shadow: var(--shadow);
+  }
+  .card .ico { font-size: 22px; }
+  .card h3 { margin: 8px 0 2px; font-size: 16px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* Support */
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #1c1c1e; font-weight: 600; text-decoration: none;
+    padding: 12px 20px; border-radius: 999px; margin-top: 6px;
+  }
+  .contact-btn:hover { filter: brightness(1.04); }
+
+  /* Privacy */
+  #privacy p, #privacy li { color: var(--text); }
+  #privacy h3 { color: var(--accent-strong); }
+  #privacy .updated { color: var(--muted); font-size: 14px; margin-top: -2px; }
+
+  footer {
+    max-width: 760px; margin: 0 auto; padding: 28px 20px 48px;
+    border-top: 1px solid var(--border); color: var(--muted); font-size: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; justify-content: space-between;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="mark">🍌</span><span>Kana<span class="accent">Banana</span></span></div>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#support">Support</a>
+    <a href="#privacy">Privacy</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero / basic info -->
+  <section class="hero">
+    <h1>Learn <span style="color:var(--accent-strong)">hiragana</span> &amp; <span style="color:var(--accent-strong)">katakana</span></h1>
+    <p class="blurb">A focused iOS trainer for the two Japanese syllabaries. Trace each kana with stroke‑order guidance, quiz yourself, and watch your progress turn green — a few minutes a day.</p>
+    <span class="badge">Coming to the App Store</span>
+    <div class="kana-strip" aria-hidden="true">
+      <span>あ</span><span>か</span><span>さ</span><span>た</span><span>な</span>
+      <span>ア</span><span>カ</span><span>サ</span><span>タ</span><span>ナ</span>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <h2>What you can do</h2>
+    <div class="features">
+      <div class="card"><div class="ico">✍️</div><h3>Trace with stroke order</h3><p>Draw over a numbered guide and tap Check for instant scoring on shape and stroke order — easy, normal, or hard.</p></div>
+      <div class="card"><div class="ico">🎓</div><h3>Guided lessons</h3><p>Learn kana a row at a time, with star grades and unlocks as you progress.</p></div>
+      <div class="card"><div class="ico">🔁</div><h3>Recall drills</h3><p>Practice both ways — glyph→reading and reading→glyph, typed or tapped.</p></div>
+      <div class="card"><div class="ico">📊</div><h3>Mastery at a glance</h3><p>A color‑coded gojūon table and progress chart show what's solid and what needs work.</p></div>
+      <div class="card"><div class="ico">📖</div><h3>Full reference</h3><p>Every basic hiragana and katakana (46 of each) with romaji readings.</p></div>
+      <div class="card"><div class="ico">🔒</div><h3>Private by design</h3><p>Works fully offline. No account, no ads, no tracking. Optional iCloud backup.</p></div>
+    </div>
+  </section>
+
+  <!-- Support -->
+  <section id="support">
+    <h2>Support</h2>
+    <p>Questions, bug reports, or feature ideas? We'd love to hear from you.</p>
+    <p><a class="contact-btn" href="mailto:kanabanana@gmail.com?subject=KanaBanana%20support">✉️ kanabanana@gmail.com</a></p>
+    <p class="small muted">You can also reach us on X: <a href="https://x.com/kanabanana">@kanabanana</a>.</p>
+  </section>
+
+  <!-- Privacy Policy -->
+  <section id="privacy">
+    <h2>Privacy Policy</h2>
+    <p class="updated">Last updated: June 30, 2026</p>
+
+    <p>KanaBanana (“the app”) is a hiragana and katakana learning app. Your privacy here is simple: the app does not collect, transmit, or sell any personal data.</p>
+
+    <h3>Data we collect</h3>
+    <p>None. The app has no accounts, no sign‑in, and no analytics or tracking. The developer cannot see how you use the app.</p>
+
+    <h3>Data stored on your device</h3>
+    <p>Your learning data — practice progress, lesson results, and settings — is stored only on your device. It never leaves your device except through the optional iCloud backup below. You can erase it anytime via <strong>Settings → Reset</strong>, or by deleting the app.</p>
+
+    <h3>iCloud backup (optional)</h3>
+    <p>If you turn on iCloud backup, a copy of your progress is stored in your own iCloud account so you can restore it. This is handled by Apple under <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>; the developer has no access to it. You can disable it or remove the backup at any time.</p>
+
+    <h3>Pronunciation</h3>
+    <p>Optional spoken readings use your device's built‑in text‑to‑speech. This runs entirely on your device; nothing is sent to the developer or any third party.</p>
+
+    <h3>Third parties</h3>
+    <p>The app contains no third‑party advertising, analytics, or tracking, and shares no data with anyone.</p>
+
+    <h3>Children</h3>
+    <p>The app is suitable for all ages and collects no data from anyone, including children.</p>
+
+    <h3>Your rights</h3>
+    <p>Because no personal data is collected, there is nothing for the developer to access, export, or delete. Data on your device stays under your control and can be deleted as described above.</p>
+
+    <h3>Changes</h3>
+    <p>If this policy changes, the updated version will be posted on this page with a new date.</p>
+
+    <h3>Contact</h3>
+    <p>Questions about privacy? Email <a href="mailto:kanabanana@gmail.com?subject=KanaBanana%20privacy">kanabanana@gmail.com</a>.</p>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 KanaBanana</span>
+  <span><a href="#support">Support</a> · <a href="#privacy">Privacy</a></span>
+</footer>
+
+</body>
+</html>
