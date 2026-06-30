@@ -14,6 +14,24 @@
 <meta property="og:description" content="A focused iOS trainer for hiragana and katakana. Trace, quiz, and review until every kana turns green.">
 <meta property="og:url" content="https://alatip.github.io/kanabanana-public/">
 
+<!-- Discovery / search + iOS app association (helps crawlers tie the page to the app) -->
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://alatip.github.io/kanabanana-public/">
+<meta name="apple-itunes-app" content="app-id=6784908075">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "KanaBanana",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "iOS",
+  "description": "A focused iOS trainer for hiragana and katakana — trace with stroke order, quiz yourself, and review.",
+  "url": "https://alatip.github.io/kanabanana-public/",
+  "downloadUrl": "https://apps.apple.com/app/id6784908075",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
 <style>
   :root {
     --bg: #FFFDF7;
@@ -97,8 +115,9 @@
   .badge {
     display: inline-block; margin-top: 6px; padding: 8px 16px; border-radius: 999px;
     background: var(--surface-2); border: 1px solid var(--border);
-    color: var(--accent-strong); font-weight: 600; font-size: 14px;
+    color: var(--accent-strong); font-weight: 600; font-size: 14px; text-decoration: none;
   }
+  .badge:hover { border-color: var(--accent); }
 
   /* Feature cards */
   .features { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
@@ -149,7 +168,7 @@
   <section class="hero">
     <h1>Learn <span style="color:var(--accent-strong)">hiragana</span> &amp; <span style="color:var(--accent-strong)">katakana</span></h1>
     <p class="blurb">A focused iOS trainer for the two Japanese syllabaries. Trace each kana with stroke‑order guidance, quiz yourself, and watch your progress turn green — a few minutes a day.</p>
-    <span class="badge">Coming to the App Store</span>
+    <a class="badge" href="https://apps.apple.com/app/id6784908075">Coming to the App Store →</a>
     <div class="kana-strip" aria-hidden="true">
       <span>あ</span><span>か</span><span>さ</span><span>た</span><span>な</span>
       <span>ア</span><span>カ</span><span>サ</span><span>タ</span><span>ナ</span>
